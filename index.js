@@ -1,5 +1,7 @@
 // Define the port to open the server on 
-const PORT = 8000;
+// const PORT = 8000;
+// change the port options for hero...
+const PORT = process.env.PORT || 8000
 // initialize express
 const express = require('express');
 // initialize axios
@@ -15,15 +17,18 @@ const app = express();
 const newspapers = [
     {
         name:"thetimes",
-        address : "https://www.thetimes.co.uk/environment/climate-change"
+        address : "https://www.thetimes.co.uk/environment/climate-change",
+        base: ""
     },
     {
         name:"guardian",
         address : "https://www.theguardian.com/environment/climate-crisis",
+        base: ""
     },
     {
         name:"telegraph",
         address : "https://www.telegraph.co.uk/climate-change",
+        base: "https://www.telegraph.co.uk"
     }
 ];
 
@@ -43,7 +48,7 @@ newspapers.forEach(newspaper => {
 
             articles.push({
                 title, 
-                url,
+                url: newspaper.base + url,
                 source:newspaper.name
             })
         })
@@ -60,5 +65,36 @@ app.get('/news', (req,res)=>{
    res.json(articles);
 })
 
+// get information from one newspaper article
+app.get('/news/:newspaperId', (req, res) => {
+    // grab whatever newspaper ID you pass infront of news
+    const newspaperId = req.params.newspaperId
+
+    const newspaperAddress = newspapers.filter(newspaper => newspaper.name === newspaperId)[0].address
+    const newspaperBase = newspapers.filter(newspaper => newspaper.name ==newspaperId)[0].base    
+
+    axios.get(newspaperAddress)
+        .then(response =>{
+            const html = response.data
+            const $ = cheerio.load(html)
+            // collect all articles
+            const specificArticles = []
+
+            $('a:contains("climate")', html).each(function () {
+                const title = $(this).text()
+                const url = $(this).attr('href')
+                specificArticles.push({
+                    title,
+                    url: newspaperBase + url,
+                    source: newspaperId
+
+                })
+            })
+            // display in browser
+            res.json(specificArticles)
+        })
+        // catch any errors
+        .catch(err => console.log(err))
+})
 // listen to our port
 app.listen(PORT, () => console.log(`server running on PORT ${PORT}`));
