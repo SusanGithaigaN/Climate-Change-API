@@ -1,6 +1,6 @@
 // Define the port to open the server on 
 // const PORT = 8000;
-// change the port options for hero...
+// change the port options for heroku
 const PORT = process.env.PORT || 8000
 // initialize express
 const express = require('express');
