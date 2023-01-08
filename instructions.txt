@@ -1,0 +1,5 @@
+Youtube tutorial URL: https://www.youtube.com/watch?v=GK4Pl-GmPHk
+wix logo maker:https://www.wix.com/buildyourwebsite5/designlogo?utm_source=google&gclid=Cj0KCQiAzeSdBhC4ARIsACj36uFbI_biJsYbG_d8dxtG6y6XF3ZCKpi-BM8nkuz0s11zrRW4B4OA86UaAutrEALw_wcB&utm_campaign=yt_ads_wix_t5_acq_logo_dt_en%5Eent-biz&experiment_id=youtube.com%5Ec1%5E%5E&utm_medium=cpc
+every app that used node.js will need to have a package JSON file
+
+cheerio is used to pick up html elements on a webpage
